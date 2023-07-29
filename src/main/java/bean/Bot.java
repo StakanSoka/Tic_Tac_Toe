@@ -1,12 +1,11 @@
 package bean;
 
 import jakarta.persistence.*;
-
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table
 public class Bot {
 
     @Id
@@ -26,10 +25,26 @@ public class Bot {
     @Column
     private int coin;
 
-    @OneToMany(mappedBy = "bot")
-    Set<UserBotMap> userBotMaps = new HashSet<>();
+    @OneToMany(mappedBy = "bot", cascade = CascadeType.ALL)
+    Set<UserBotMap> userBotMaps;
 
-    public Bot(){}
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "bot_symbol_map",
+            joinColumns = @JoinColumn(name = "bot_id"),
+            inverseJoinColumns = @JoinColumn(name = "symbol_id")
+    )
+    Set<Symbol> symbols;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "bot_layout_pattern_map",
+            joinColumns = @JoinColumn(name = "bot_id"),
+            inverseJoinColumns = @JoinColumn(name = "layout_pattern_id")
+    )
+    Set<LayoutPattern> layoutPatterns;
+
+    public Bot() {}
 
     public int getId() {
         return id;
@@ -75,11 +90,11 @@ public class Bot {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bot bot)) return false;
-        return id == bot.id && coin == bot.coin && name.equals(bot.name) && image.equals(bot.image) && difficulty.equals(bot.difficulty) && userBotMaps.equals(bot.userBotMaps);
+        return id == bot.id && coin == bot.coin && name.equals(bot.name) && image.equals(bot.image) && difficulty.equals(bot.difficulty);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, image, difficulty, coin, userBotMaps);
+        return Objects.hash(id, name, image, difficulty, coin);
     }
 }

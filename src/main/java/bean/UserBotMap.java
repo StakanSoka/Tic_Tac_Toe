@@ -1,5 +1,6 @@
 package bean;
 
+import bean.keys.UserBotMapKey;
 import jakarta.persistence.*;
 import util.BooleanToYNConverter;
 
@@ -12,7 +13,7 @@ public class UserBotMap {
     @EmbeddedId
     private UserBotMapKey key;
 
-    @Column(nullable = false)
+    @Column
     @Convert(converter = BooleanToYNConverter.class)
     private char win;
 

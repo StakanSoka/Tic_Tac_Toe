@@ -1,18 +1,18 @@
-package bean;
+package bean.keys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class UserBotMapKey implements Serializable {
+public class UserSymbolMapKey implements Serializable {
 
     @Column(name = "user_id")
-    private int userId;
-    @Column(name = "bot_id")
-    private int botId;
+    int userId;
+
+    @Column(name = "symbol_id")
+    int symbolId;
 
     public int getUserId() {
         return userId;
@@ -22,23 +22,23 @@ public class UserBotMapKey implements Serializable {
         this.userId = userId;
     }
 
-    public int getBotId() {
-        return botId;
+    public int getSymbolId() {
+        return symbolId;
     }
 
-    public void setBotId(int botId) {
-        this.botId = botId;
+    public void setSymbolId(int symbolId) {
+        this.symbolId = symbolId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserBotMapKey that)) return false;
-        return userId == that.userId && botId == that.botId;
+        if (!(o instanceof UserSymbolMapKey that)) return false;
+        return userId == that.userId && symbolId == that.symbolId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, botId);
+        return Objects.hash(userId, symbolId);
     }
 }

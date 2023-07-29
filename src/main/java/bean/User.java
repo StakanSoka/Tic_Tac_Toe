@@ -37,7 +37,17 @@ public class User {
     private int coin;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<UserBotMap> userBotMaps = new HashSet<>();
+    Set<UserBotMap> userBotMaps;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    Set<UserSymbolMap> userSymbolMaps;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    Set<UserOrder> userOrders;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    Set<UserLayoutPatternMap> userLayoutPatternMaps;
 
     public User() {}
 
@@ -106,28 +116,14 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", image='" + image + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", registration_date=" + registrationDate +
-                ", coin=" + coin +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return id == user.id && coin == user.coin && login.equals(user.login) && password.equals(user.password) && role.equals(user.role) && image.equals(user.image) && nickname.equals(user.nickname) && registrationDate.equals(user.registrationDate) && userBotMaps.equals(user.userBotMaps);
+        return id == user.id && coin == user.coin && login.equals(user.login) && password.equals(user.password) && role.equals(user.role) && image.equals(user.image) && nickname.equals(user.nickname) && registrationDate.equals(user.registrationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, role, image, nickname, registrationDate, coin, userBotMaps);
+        return Objects.hash(id, login, password, role, image, nickname, registrationDate, coin);
     }
 }
