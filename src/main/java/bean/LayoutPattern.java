@@ -2,41 +2,30 @@ package bean;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "layout_pattern")
-public class LayoutPattern {
+@DiscriminatorValue("2")
+public class LayoutPattern extends Item {
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-
-    @Column
+    @Column(nullable = false)
     private String position1;
 
-    @Column
+    @Column(nullable = false)
     private String position2;
 
     @Column
     private int price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "layoutPattern")
-    Set<UserLayoutPatternMap> userLayoutPatternMaps;
+    private Set<UserLayoutPatternMap> userLayoutPatternMaps;
 
     @ManyToMany(mappedBy = "layoutPatterns")
-    Set<Bot> bots;
+    private Set<Bot> bots;
 
     public LayoutPattern(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getPosition1() {
         return position1;
@@ -60,5 +49,34 @@ public class LayoutPattern {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Set<UserLayoutPatternMap> getUserLayoutPatternMaps() {
+        return userLayoutPatternMaps;
+    }
+
+    public void setUserLayoutPatternMaps(Set<UserLayoutPatternMap> userLayoutPatternMaps) {
+        this.userLayoutPatternMaps = userLayoutPatternMaps;
+    }
+
+    public Set<Bot> getBots() {
+        return bots;
+    }
+
+    public void setBots(Set<Bot> bots) {
+        this.bots = bots;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LayoutPattern that)) return false;
+        if (!super.equals(o)) return false;
+        return price == that.price && position1.equals(that.position1) && position2.equals(that.position2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), position1, position2, price);
     }
 }

@@ -25,7 +25,7 @@ public class UserOrder {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    OrderStatus orderStatus;
+    private OrderStatus orderStatus;
 
     public int getId() {
         return id;
@@ -57,6 +57,14 @@ public class UserOrder {
 
     public void setTotalSum(int totalSum) {
         this.totalSum = totalSum;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

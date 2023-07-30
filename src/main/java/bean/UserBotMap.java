@@ -20,12 +20,12 @@ public class UserBotMap {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @ManyToOne
     @MapsId("botId")
     @JoinColumn(name = "bot_id")
-    Bot bot;
+    private Bot bot;
 
     public UserBotMap() {}
 
@@ -43,6 +43,22 @@ public class UserBotMap {
 
     public void setWin(char win) {
         this.win = win;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Bot getBot() {
+        return bot;
+    }
+
+    public void setBot(Bot bot) {
+        this.bot = bot;
     }
 
     @Override

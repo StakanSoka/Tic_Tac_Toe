@@ -37,17 +37,17 @@ public class User {
     private int coin;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<UserBotMap> userBotMaps;
+    private Set<UserBotMap> userBotMaps;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<UserSymbolMap> userSymbolMaps;
+    private Set<UserSymbolMap> userSymbolMaps;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    Set<UserOrder> userOrders;
+    private Set<UserOrder> userOrders;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<UserLayoutPatternMap> userLayoutPatternMaps;
+    private Set<UserLayoutPatternMap> userLayoutPatternMaps;
 
     public User() {}
 
@@ -113,6 +113,38 @@ public class User {
 
     public void setCoin(int coin) {
         this.coin = coin;
+    }
+
+    public Set<UserBotMap> getUserBotMaps() {
+        return userBotMaps;
+    }
+
+    public void setUserBotMaps(Set<UserBotMap> userBotMaps) {
+        this.userBotMaps = userBotMaps;
+    }
+
+    public Set<UserSymbolMap> getUserSymbolMaps() {
+        return userSymbolMaps;
+    }
+
+    public void setUserSymbolMaps(Set<UserSymbolMap> userSymbolMaps) {
+        this.userSymbolMaps = userSymbolMaps;
+    }
+
+    public Set<UserOrder> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(Set<UserOrder> userOrders) {
+        this.userOrders = userOrders;
+    }
+
+    public Set<UserLayoutPatternMap> getUserLayoutPatternMaps() {
+        return userLayoutPatternMaps;
+    }
+
+    public void setUserLayoutPatternMaps(Set<UserLayoutPatternMap> userLayoutPatternMaps) {
+        this.userLayoutPatternMaps = userLayoutPatternMaps;
     }
 
     @Override

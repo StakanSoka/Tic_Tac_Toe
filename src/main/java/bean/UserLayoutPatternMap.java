@@ -12,7 +12,7 @@ import java.util.Objects;
 public class UserLayoutPatternMap {
 
     @EmbeddedId
-    UserLayoutPatternMapKey key;
+    private UserLayoutPatternMapKey key;
 
     @Column(nullable = false)
     private LocalDate acquisition;
@@ -24,12 +24,12 @@ public class UserLayoutPatternMap {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @ManyToOne
     @MapsId("layoutPatternId")
     @JoinColumn(name = "layout_pattern_id")
-    LayoutPattern layoutPattern;
+    private LayoutPattern layoutPattern;
 
     public UserLayoutPatternMap(){}
 
@@ -55,6 +55,22 @@ public class UserLayoutPatternMap {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LayoutPattern getLayoutPattern() {
+        return layoutPattern;
+    }
+
+    public void setLayoutPattern(LayoutPattern layoutPattern) {
+        this.layoutPattern = layoutPattern;
     }
 
     @Override

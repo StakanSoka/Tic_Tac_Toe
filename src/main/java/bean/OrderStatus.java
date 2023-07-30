@@ -16,7 +16,7 @@ public class OrderStatus {
     private String name;
 
     @OneToMany(mappedBy = "orderStatus")
-    Set<UserOrder> userOrders;
+    private Set<UserOrder> userOrders;
 
     public int getId() {
         return id;
@@ -32,6 +32,14 @@ public class OrderStatus {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<UserOrder> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(Set<UserOrder> userOrders) {
+        this.userOrders = userOrders;
     }
 
     @Override

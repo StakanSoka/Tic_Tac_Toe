@@ -26,7 +26,7 @@ public class Bot {
     private int coin;
 
     @OneToMany(mappedBy = "bot", cascade = CascadeType.ALL)
-    Set<UserBotMap> userBotMaps;
+    private Set<UserBotMap> userBotMaps;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -34,7 +34,7 @@ public class Bot {
             joinColumns = @JoinColumn(name = "bot_id"),
             inverseJoinColumns = @JoinColumn(name = "symbol_id")
     )
-    Set<Symbol> symbols;
+    private Set<Symbol> symbols;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -42,7 +42,7 @@ public class Bot {
             joinColumns = @JoinColumn(name = "bot_id"),
             inverseJoinColumns = @JoinColumn(name = "layout_pattern_id")
     )
-    Set<LayoutPattern> layoutPatterns;
+    private Set<LayoutPattern> layoutPatterns;
 
     public Bot() {}
 
@@ -84,6 +84,30 @@ public class Bot {
 
     public void setCoin(int coin) {
         this.coin = coin;
+    }
+
+    public Set<UserBotMap> getUserBotMaps() {
+        return userBotMaps;
+    }
+
+    public void setUserBotMaps(Set<UserBotMap> userBotMaps) {
+        this.userBotMaps = userBotMaps;
+    }
+
+    public Set<Symbol> getSymbols() {
+        return symbols;
+    }
+
+    public void setSymbols(Set<Symbol> symbols) {
+        this.symbols = symbols;
+    }
+
+    public Set<LayoutPattern> getLayoutPatterns() {
+        return layoutPatterns;
+    }
+
+    public void setLayoutPatterns(Set<LayoutPattern> layoutPatterns) {
+        this.layoutPatterns = layoutPatterns;
     }
 
     @Override

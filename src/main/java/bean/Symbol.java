@@ -7,12 +7,8 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Symbol {
-
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@DiscriminatorValue("1")
+public class Symbol extends Item {
 
     @Column
     private char symbol;
@@ -21,20 +17,12 @@ public class Symbol {
     private int price;
 
     @OneToMany(mappedBy = "symbol")
-    Set<UserSymbolMap> userSymbolMaps;
+    private Set<UserSymbolMap> userSymbolMaps;
 
     @ManyToMany(mappedBy = "symbols")
-    Set<Bot> bots;
+    private Set<Bot> bots;
 
     public Symbol(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public char getSymbol() {
         return symbol;
@@ -52,15 +40,32 @@ public class Symbol {
         this.price = price;
     }
 
+    public Set<UserSymbolMap> getUserSymbolMaps() {
+        return userSymbolMaps;
+    }
+
+    public void setUserSymbolMaps(Set<UserSymbolMap> userSymbolMaps) {
+        this.userSymbolMaps = userSymbolMaps;
+    }
+
+    public Set<Bot> getBots() {
+        return bots;
+    }
+
+    public void setBots(Set<Bot> bots) {
+        this.bots = bots;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Symbol symbol1)) return false;
-        return id == symbol1.id && symbol == symbol1.symbol && price == symbol1.price;
+        if (!super.equals(o)) return false;
+        return symbol == symbol1.symbol && price == symbol1.price;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, symbol, price);
+        return Objects.hash(super.hashCode(), symbol, price);
     }
 }

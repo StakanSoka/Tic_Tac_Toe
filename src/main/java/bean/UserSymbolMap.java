@@ -12,7 +12,7 @@ import java.util.Objects;
 public class UserSymbolMap {
 
     @EmbeddedId
-    UserSymbolMapKey key;
+    private UserSymbolMapKey key;
 
     @Column(nullable = false)
     private LocalDate acquisition;
@@ -24,12 +24,12 @@ public class UserSymbolMap {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @ManyToOne
     @MapsId("symbolId")
     @JoinColumn(name = "symbol_id")
-    Symbol symbol;
+    private Symbol symbol;
 
     public UserSymbolMap(){}
 
@@ -55,6 +55,22 @@ public class UserSymbolMap {
 
     public void setActive(boolean is_active) {
         this.active = is_active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
     }
 
     @Override
