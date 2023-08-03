@@ -1,14 +1,20 @@
 package dao;
 
-import manager.HibernateFactoryManager;
+import config.HibernateFactoryConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class AbstractDAO<T, ID> {
 
+    protected Class<T> entityClass;
+    protected String tableName;
+
     public void save(T entity) {
-        HibernateFactoryManager factoryManager = HibernateFactoryManager.getInstance();
-        SessionFactory sessionFactory = factoryManager.getSessionFactory();
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -16,11 +22,12 @@ public abstract class AbstractDAO<T, ID> {
         session.persist(entity);
 
         session.getTransaction().commit();
+        session.close();
     }
 
     public void update(T entity) {
-        HibernateFactoryManager factoryManager = HibernateFactoryManager.getInstance();
-        SessionFactory sessionFactory = factoryManager.getSessionFactory();
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -28,11 +35,12 @@ public abstract class AbstractDAO<T, ID> {
         session.merge(entity);
 
         session.getTransaction().commit();
+        session.close();
     }
 
     public void delete(T entity) {
-        HibernateFactoryManager factoryManager = HibernateFactoryManager.getInstance();
-        SessionFactory sessionFactory = factoryManager.getSessionFactory();
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -40,22 +48,38 @@ public abstract class AbstractDAO<T, ID> {
         session.remove(entity);
 
         session.getTransaction().commit();
+        session.close();
     }
 
-    public T getById(ID id) {
-        HibernateFactoryManager factoryManager = HibernateFactoryManager.getInstance();
-        SessionFactory sessionFactory = factoryManager.getSessionFactory();
+    public T find(ID id) {
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
-        T entity = session.get(getEntityClass(), id);
+        T entity = session.get(entityClass, id);
 
         session.getTransaction().commit();
+        session.close();
 
         return entity;
     }
 
-    protected abstract Class<T> getEntityClass();
+    public Set<T> findAll() {
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        String selectAll = "SELECT * FROM " + tableName;
 
+        session.beginTransaction();
+
+        Set<T> entities = session.createNativeQuery(selectAll, entityClass).getResultStream().
+                collect(Collectors.toSet());
+
+        session.getTransaction().commit();
+        session.close();
+
+        return entities;
+    }
 }
