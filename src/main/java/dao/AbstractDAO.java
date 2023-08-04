@@ -3,14 +3,9 @@ package dao;
 import config.HibernateFactoryConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public abstract class AbstractDAO<T, ID> {
-
-    protected Class<T> entityClass;
-    protected String tableName;
 
     public void save(T entity) {
         HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
@@ -58,7 +53,7 @@ public abstract class AbstractDAO<T, ID> {
 
         session.beginTransaction();
 
-        T entity = session.get(entityClass, id);
+        T entity = session.get(getEntityClass(), id);
 
         session.getTransaction().commit();
         session.close();
@@ -66,20 +61,23 @@ public abstract class AbstractDAO<T, ID> {
         return entity;
     }
 
-    public Set<T> findAll() {
+    public List<T> findAll() {
         HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
         SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
-        String selectAll = "SELECT * FROM " + tableName;
+        String selectAll = "SELECT * FROM " + getTableName();
 
         session.beginTransaction();
 
-        Set<T> entities = session.createNativeQuery(selectAll, entityClass).getResultStream().
-                collect(Collectors.toSet());
+        List<T> entities = session.createNativeQuery(selectAll, getEntityClass()).getResultStream().toList();
 
         session.getTransaction().commit();
         session.close();
 
         return entities;
     }
+
+    public abstract Class<T> getEntityClass();
+
+    public abstract String getTableName();
 }

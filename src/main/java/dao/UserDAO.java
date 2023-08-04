@@ -17,13 +17,23 @@ public class UserDAO extends AbstractDAO<User, Integer> {
 
         session.beginTransaction();
 
-        user = (User)session.createNativeQuery(sql, entityClass)
-                .setParameter("tableName", tableName)
+        user = (User)session.createNativeQuery(sql, getEntityClass())
+                .setParameter("tableName", getTableName())
                 .setParameter("login", login).getSingleResult();
 
         session.getTransaction().commit();
         session.close();
 
         return user;
+    }
+
+    @Override
+    public Class<User> getEntityClass() {
+        return User.class;
+    }
+
+    @Override
+    public String getTableName() {
+        return "user";
     }
 }
