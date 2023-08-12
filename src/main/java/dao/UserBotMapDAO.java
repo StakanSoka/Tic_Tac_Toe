@@ -1,8 +1,10 @@
 package dao;
 
 import bean.UserBotMap;
-import bean.keys.UserBotMapKey;
+import bean.key.UserBotMapKey;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserBotMapDAO extends AbstractDAO<UserBotMap, UserBotMapKey> {
 
     @Override

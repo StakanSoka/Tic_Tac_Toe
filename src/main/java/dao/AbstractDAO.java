@@ -3,6 +3,8 @@ package dao;
 import config.HibernateFactoryConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.io.Serializable;
 import java.util.List;
 
 public abstract class AbstractDAO<T, ID> {
@@ -53,7 +55,7 @@ public abstract class AbstractDAO<T, ID> {
 
         session.beginTransaction();
 
-        T entity = session.get(getEntityClass(), id);
+        T entity = session.get(getEntityClass(), (Serializable) id);
 
         session.getTransaction().commit();
         session.close();

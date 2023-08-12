@@ -1,7 +1,7 @@
 package dao;
 
 import bean.UserSymbolMap;
-import bean.keys.UserSymbolMapKey;
+import bean.key.UserSymbolMapKey;
 
 public class UserSymbolMapDAO extends AbstractDAO<UserSymbolMap, UserSymbolMapKey> {
 

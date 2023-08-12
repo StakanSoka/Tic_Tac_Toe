@@ -1,10 +1,14 @@
 package dao;
 
-public class BotDAO extends AbstractDAO<BotDAO, Integer> {
+import bean.Bot;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BotDAO extends AbstractDAO<Bot, Integer> {
 
     @Override
-    public Class<BotDAO> getEntityClass() {
-        return BotDAO.class;
+    public Class<Bot> getEntityClass() {
+        return Bot.class;
     }
 
     @Override

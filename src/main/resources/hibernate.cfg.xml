@@ -15,7 +15,6 @@
         <property name="hibernate.connection.useUnicode">true</property>
 
         <mapping class="bean.Bot"/>
-        <mapping class="bean.Item"/>
         <mapping class="bean.LayoutPattern"/>
         <mapping class="bean.OrderDetail"/>
         <mapping class="bean.OrderStatus"/>
@@ -25,5 +24,9 @@
         <mapping class="bean.UserLayoutPatternMap"/>
         <mapping class="bean.UserOrder"/>
         <mapping class="bean.UserSymbolMap"/>
+
+        <mapping class="bean.key.UserBotMapKey"/>
+        <mapping class="bean.key.UserLayoutPatternMapKey"/>
+        <mapping class="bean.key.UserSymbolMapKey"/>
     </session-factory>
 </hibernate-configuration>

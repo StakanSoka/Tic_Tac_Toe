@@ -1,7 +1,7 @@
-package bean.keys;
+package bean.key;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -35,7 +35,7 @@ public class UserBotMapKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserBotMapKey that)) return false;
-        return userId == that.userId && botId == that.botId;
+        return Objects.equals(userId, that.userId) && Objects.equals(botId, that.botId);
     }
 
     @Override

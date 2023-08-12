@@ -1,7 +1,7 @@
 package bean;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.*;

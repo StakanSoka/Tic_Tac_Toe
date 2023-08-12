@@ -1,7 +1,7 @@
 package bean;
 
-import bean.keys.UserBotMapKey;
-import jakarta.persistence.*;
+import bean.key.UserBotMapKey;
+import javax.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class UserBotMap {
 
     @Column
     @Convert(converter = BooleanToYNConverter.class)
-    private char win;
+    private boolean win;
 
     @ManyToOne
     @MapsId("userId")
@@ -37,11 +37,11 @@ public class UserBotMap {
         this.key = key;
     }
 
-    public char getWin() {
+    public boolean getWin() {
         return win;
     }
 
-    public void setWin(char win) {
+    public void setWin(boolean win) {
         this.win = win;
     }
 

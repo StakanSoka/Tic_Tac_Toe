@@ -4,7 +4,9 @@ import bean.User;
 import config.HibernateFactoryConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserDAO extends AbstractDAO<User, Integer> {
 
     public User findByLogin(String login) {

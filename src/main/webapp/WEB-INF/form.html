@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registration</title>
+</head>
+<body>
+    <form th:method="POST" th:action="@{create}">
+        <label for="login">login</label>
+        <input type="text" id="login" name="login">
+
+        <br>
+
+        <label for="password">password</label>
+        <input type="password" id="password" name="password">
+
+        <br>
+
+        <input type="submit" value="ok">
+    </form>
+</body>
+</html>

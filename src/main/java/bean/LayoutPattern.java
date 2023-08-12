@@ -1,6 +1,6 @@
 package bean;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.Objects;
 import java.util.Set;

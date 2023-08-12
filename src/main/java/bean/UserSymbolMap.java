@@ -1,7 +1,7 @@
 package bean;
 
-import bean.keys.UserSymbolMapKey;
-import jakarta.persistence.*;
+import bean.key.UserSymbolMapKey;
+import javax.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.time.LocalDate;
