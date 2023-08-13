@@ -1,7 +1,6 @@
 package bean;
 
-import bean.key.UserBotMapKey;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.util.Objects;
@@ -10,34 +9,34 @@ import java.util.Objects;
 @Table(name = "user_bot_map")
 public class UserBotMap {
 
-    @EmbeddedId
-    private UserBotMapKey key;
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column
     @Convert(converter = BooleanToYNConverter.class)
     private boolean win;
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @MapsId("botId")
     @JoinColumn(name = "bot_id")
     private Bot bot;
 
     public UserBotMap() {}
 
-    public UserBotMapKey getKey() {
-        return key;
+    public int getId() {
+        return id;
     }
 
-    public void setKey(UserBotMapKey key) {
-        this.key = key;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public boolean getWin() {
+    public boolean isWin() {
         return win;
     }
 
@@ -65,11 +64,11 @@ public class UserBotMap {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserBotMap that)) return false;
-        return win == that.win && key.equals(that.key);
+        return id == that.id && win == that.win;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, win);
+        return Objects.hash(id, win);
     }
 }

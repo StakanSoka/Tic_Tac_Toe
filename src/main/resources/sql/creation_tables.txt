@@ -8,14 +8,14 @@ CREATE TABLE user(id INT PRIMARY KEY AUTO_INCREMENT, login VARCHAR(256) NOT NULL
 CREATE TABLE bot(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(60) NOT NULL, image VARCHAR(300) NOT NULL,
                  difficulty VARCHAR(20) NOT NULL, coin INT NOT NULL);
 
-CREATE TABLE user_bot_map(user_id INT NOT NULL, bot_id INT NOT NULL,
+CREATE TABLE user_bot_map(id INT PRIMARY KEY AUTO_INCREMENT, user_id INT NOT NULL, bot_id INT NOT NULL,
                           win CHAR(1) NOT NULL, FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
                           FOREIGN KEY (bot_id) REFERENCES bot (id) ON DELETE CASCADE);
 
-CREATE TABLE  symbol(id INT PRIMARY KEY AUTO_INCREMENT, symbol CHAR(1) NOT NULL, price 	INT NOT NULL);
+CREATE TABLE  symbol(id INT PRIMARY KEY AUTO_INCREMENT, symbol CHAR(1) NOT NULL UNIQUE, price 	INT NOT NULL);
 
-CREATE TABLE user_symbol_map(user_id INT NOT NULL, symbol_id INT NOT NULL,
-                             acquisition DATE not null, active CHAR(1) NOT NULL,
+CREATE TABLE user_symbol_map(id INT PRIMARY KEY AUTO_INCREMENT, user_id INT NOT NULL, symbol_id INT NOT NULL,
+                             acquisition DATE not null, active CHAR(1) NOT NULL, activation_date DATETIME,
                              FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
                              FOREIGN KEY(symbol_id) REFERENCES symbol(id) ON DELETE CASCADE);
 
@@ -37,7 +37,7 @@ CREATE TABLE order_detail(id INT PRIMARY KEY AUTO_INCREMENT, table_id INT NOT NU
 CREATE TABLE layout_pattern(id INT PRIMARY KEY AUTO_INCREMENT, position1 VARCHAR(72) NOT NULL,
                             position2 VARCHAR(72) NOT NULL, price INT NOT NULL);
 
-CREATE TABLE user_layout_pattern_map(acquisition DATE NOT NULL, active CHAR(1) NOT NULL,
+CREATE TABLE user_layout_pattern_map(id INT PRIMARY KEY AUTO_INCREMENT, acquisition DATE NOT NULL, active CHAR(1) NOT NULL,
                                      user_id INT NOT NULL, layout_pattern_id INT NOT NULL,
                                      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
                                      FOREIGN KEY (layout_pattern_id) REFERENCES layout_pattern(id) ON DELETE CASCADE);

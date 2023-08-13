@@ -1,7 +1,7 @@
 package bean;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -36,17 +36,16 @@ public class User {
     @Column
     private int coin;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<UserBotMap> userBotMaps;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<UserSymbolMap> userSymbolMaps;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user")
     private Set<UserOrder> userOrders;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<UserLayoutPatternMap> userLayoutPatternMaps;
 
     public User() {}

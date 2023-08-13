@@ -1,16 +1,14 @@
 package controller;
 
-import bean.Bot;
-import bean.User;
-import manager.BotManager;
-import manager.UserBotMapManager;
-import manager.UserManager;
+import bean.*;
+import manager.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import util.Constants;
 
 import java.util.List;
 
@@ -21,6 +19,11 @@ public class UserController {
     private UserManager userManager;
     private BotManager botManager;
     private UserBotMapManager userBotMapManager;
+    private SymbolManager symbolManager;
+    private UserSymbolMapManager userSymbolMapManager;
+    private LayoutPatternManager layoutPatternManager;
+    private UserLayoutPatternMapManager userLayoutPatternMapManager;
+
 
     @GetMapping("/create")
     public String create() {
@@ -31,10 +34,20 @@ public class UserController {
     public String create(@RequestParam("login") String login, @RequestParam("password") String password) {
         User user = userManager.create(login, password);
         List<Bot> bots = botManager.findAll();
+        List<Symbol> basedSymbols = symbolManager.findBasedSymbols();
+        LayoutPattern basedLayoutPattern = layoutPatternManager.find(Constants.BasedLayoutPattern.ID);
 
         userManager.save(user);
-        user = userManager.findByLogin(user.getLogin());
-        userBotMapManager.save(user, bots);
+
+        userBotMapManager.create(user, bots).forEach(userBotMap -> userBotMapManager.save(userBotMap));
+
+        userSymbolMapManager.create(user, basedSymbols).forEach
+                (basedSymbol -> {
+            userSymbolMapManager.activate(basedSymbol);
+            userSymbolMapManager.save(basedSymbol);
+        });
+
+        userLayoutPatternMapManager.save(userLayoutPatternMapManager.create(user, basedLayoutPattern));
 
         return "redirect:/";
     }
@@ -52,5 +65,25 @@ public class UserController {
     @Autowired
     public void setUserBotMapManager(UserBotMapManager userBotMapManager) {
         this.userBotMapManager = userBotMapManager;
+    }
+
+    @Autowired
+    public void setSymbolManager(SymbolManager symbolManager) {
+        this.symbolManager = symbolManager;
+    }
+
+    @Autowired
+    public void setUserSymbolMapManager(UserSymbolMapManager userSymbolMapManager) {
+        this.userSymbolMapManager = userSymbolMapManager;
+    }
+
+    @Autowired
+    public void setLayoutPatternManager(LayoutPatternManager layoutPatternManager) {
+        this.layoutPatternManager = layoutPatternManager;
+    }
+
+    @Autowired
+    public void setUserLayoutPatternMapManager(UserLayoutPatternMapManager userLayoutPatternMapManager) {
+        this.userLayoutPatternMapManager = userLayoutPatternMapManager;
     }
 }

@@ -7,3 +7,13 @@ values ('DREADFUL PLAIN -.-', 'root', 'easy', '10');
 insert into user_bot_map (user_id, bot_id, win)
 values (1, 1, 'N')
 
+insert into symbol(symbol, price)
+values ('X', 0);
+
+insert into symbol(symbol, price)
+values ('O', 0)
+
+insert into layout_pattern(position1, position2, price)
+values (' X       X \n   X   X   \n     X     \n   X   X   \n X       X \n',
+        '   X X X   \n  X     X  \n  X     X  \n  X     X  \n   X X X   \n', 0)
+

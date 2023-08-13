@@ -31,6 +31,10 @@ public class UserManager {
         userDAO.save(user);
     }
 
+    public void update(User user) {
+        userDAO.update(user);
+    }
+
     public User findByLogin(String login) {
         return userDAO.findByLogin(login);
     }

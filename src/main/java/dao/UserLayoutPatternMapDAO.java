@@ -1,9 +1,10 @@
 package dao;
 
 import bean.UserLayoutPatternMap;
-import bean.key.UserLayoutPatternMapKey;
+import org.springframework.stereotype.Component;
 
-public class UserLayoutPatternMapDAO extends AbstractDAO<UserLayoutPatternMap, UserLayoutPatternMapKey> {
+@Component
+public class UserLayoutPatternMapDAO extends AbstractDAO<UserLayoutPatternMap, Integer> {
 
     @Override
     public Class<UserLayoutPatternMap> getEntityClass() {

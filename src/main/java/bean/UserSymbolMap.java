@@ -1,18 +1,20 @@
 package bean;
 
-import bean.key.UserSymbolMapKey;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_symbol_map")
 public class UserSymbolMap {
 
-    @EmbeddedId
-    private UserSymbolMapKey key;
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(nullable = false)
     private LocalDate acquisition;
@@ -21,24 +23,33 @@ public class UserSymbolMap {
     @Convert(converter = BooleanToYNConverter.class)
     private boolean active;
 
+    @Column(name = "activation_date")
+    private LocalDateTime activationDate;
+
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @MapsId("symbolId")
     @JoinColumn(name = "symbol_id")
     private Symbol symbol;
 
     public UserSymbolMap(){}
 
-    public UserSymbolMapKey getKey() {
-        return key;
+    public LocalDateTime getActivationDate() {
+        return activationDate;
     }
 
-    public void setKey(UserSymbolMapKey key) {
-        this.key = key;
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDate getAcquisition() {
@@ -77,11 +88,11 @@ public class UserSymbolMap {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserSymbolMap that)) return false;
-        return active == that.active && key.equals(that.key) && acquisition.equals(that.acquisition);
+        return id == that.id && active == that.active && acquisition.equals(that.acquisition) && Objects.equals(activationDate, that.activationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, acquisition, active);
+        return Objects.hash(id, acquisition, active, activationDate);
     }
 }

@@ -1,7 +1,9 @@
 package dao;
 
 import bean.OrderDetail;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderDetailDAO extends AbstractDAO<OrderDetail, Integer> {
 
     @Override

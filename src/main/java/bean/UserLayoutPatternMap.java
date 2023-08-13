@@ -1,7 +1,6 @@
 package bean;
 
-import bean.key.UserLayoutPatternMapKey;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.time.LocalDate;
@@ -11,8 +10,10 @@ import java.util.Objects;
 @Table(name = "user_layout_pattern_map")
 public class UserLayoutPatternMap {
 
-    @EmbeddedId
-    private UserLayoutPatternMapKey key;
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(nullable = false)
     private LocalDate acquisition;
@@ -22,23 +23,21 @@ public class UserLayoutPatternMap {
     private boolean active;
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @MapsId("layoutPatternId")
     @JoinColumn(name = "layout_pattern_id")
     private LayoutPattern layoutPattern;
 
     public UserLayoutPatternMap(){}
 
-    public UserLayoutPatternMapKey getKey() {
-        return key;
+    public int getId() {
+        return id;
     }
 
-    public void setKey(UserLayoutPatternMapKey key) {
-        this.key = key;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDate getAcquisition() {
@@ -77,11 +76,11 @@ public class UserLayoutPatternMap {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserLayoutPatternMap that)) return false;
-        return active == that.active && key.equals(that.key) && acquisition.equals(that.acquisition);
+        return id == that.id && active == that.active && acquisition.equals(that.acquisition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, acquisition, active);
+        return Objects.hash(id, acquisition, active);
     }
 }

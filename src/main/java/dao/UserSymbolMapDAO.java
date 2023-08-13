@@ -1,9 +1,10 @@
 package dao;
 
 import bean.UserSymbolMap;
-import bean.key.UserSymbolMapKey;
+import org.springframework.stereotype.Component;
 
-public class UserSymbolMapDAO extends AbstractDAO<UserSymbolMap, UserSymbolMapKey> {
+@Component
+public class UserSymbolMapDAO extends AbstractDAO<UserSymbolMap, Integer> {
 
     @Override
     public Class<UserSymbolMap> getEntityClass() {

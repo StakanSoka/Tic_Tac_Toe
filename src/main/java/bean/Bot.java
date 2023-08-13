@@ -1,6 +1,6 @@
 package bean;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,10 +25,10 @@ public class Bot {
     @Column
     private int coin;
 
-    @OneToMany(mappedBy = "bot", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bot")
     private Set<UserBotMap> userBotMaps;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "bot_symbol_map",
             joinColumns = @JoinColumn(name = "bot_id"),
@@ -36,7 +36,7 @@ public class Bot {
     )
     private Set<Symbol> symbols;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "bot_layout_pattern_map",
             joinColumns = @JoinColumn(name = "bot_id"),

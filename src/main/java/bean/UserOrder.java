@@ -1,6 +1,6 @@
 package bean;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -26,6 +26,10 @@ public class UserOrder {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private OrderStatus orderStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public int getId() {
         return id;

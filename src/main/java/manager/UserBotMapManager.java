@@ -7,24 +7,34 @@ import dao.UserBotMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class UserBotMapManager {
 
     private UserBotMapDAO userBotMapDAO;
 
-    public void save(User user, List<Bot> bots) {
+    public Set<UserBotMap> create(User user, List<Bot> bots) {
+        Set<UserBotMap> userBotMaps = new HashSet<>();
         UserBotMap userBotMap;
 
         for (Bot bot : bots) {
             userBotMap = new UserBotMap();
+
             userBotMap.setWin(false);
             userBotMap.setUser(user);
             userBotMap.setBot(bot);
 
-            userBotMapDAO.save(userBotMap);
+            userBotMaps.add(userBotMap);
         }
+
+        return userBotMaps;
+    }
+
+    public void save(UserBotMap userBotMap) {
+        userBotMapDAO.save(userBotMap);
     }
 
     @Autowired

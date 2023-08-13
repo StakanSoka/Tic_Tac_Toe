@@ -1,10 +1,14 @@
 package dao;
 
-public class LayoutPatternDAO extends AbstractDAO<LayoutPatternDAO, Integer> {
+import bean.LayoutPattern;
+import org.springframework.stereotype.Component;
+
+@Component
+public class LayoutPatternDAO extends AbstractDAO<LayoutPattern, Integer> {
 
     @Override
-    public Class<LayoutPatternDAO> getEntityClass() {
-        return LayoutPatternDAO.class;
+    public Class<LayoutPattern> getEntityClass() {
+        return LayoutPattern.class;
     }
 
     @Override
