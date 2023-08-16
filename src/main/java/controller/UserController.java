@@ -3,6 +3,7 @@ package controller;
 import bean.*;
 import manager.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,8 +42,8 @@ public class UserController {
 
         userBotMapManager.create(user, bots).forEach(userBotMap -> userBotMapManager.save(userBotMap));
 
-        userSymbolMapManager.create(user, basedSymbols).forEach
-                (basedSymbol -> {
+        userSymbolMapManager.create(user, basedSymbols).forEach(
+                basedSymbol -> {
             userSymbolMapManager.activate(basedSymbol);
             userSymbolMapManager.save(basedSymbol);
         });
@@ -50,6 +51,16 @@ public class UserController {
         userLayoutPatternMapManager.save(userLayoutPatternMapManager.create(user, basedLayoutPattern));
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/hello")
+    public String helloUser() {
+        return "hello-user";
     }
 
     @Autowired

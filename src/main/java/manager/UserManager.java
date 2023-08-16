@@ -1,24 +1,28 @@
 package manager;
 
-import bean.Bot;
 import bean.User;
 import dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Component
+@Service
 public class UserManager {
 
-    UserDAO userDAO;
+    private UserDAO userDAO;
+
+    private PasswordEncoder passwordEncoder;
 
     public User create(String login, String password) {
         User user = new User();
 
         user.setLogin(login);
-        user.setPassword(password);
-        user.setRole("admin");
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("USER");
         user.setImage("root");
         user.setNickname(login);
         user.setRegistrationDate(LocalDate.now());
@@ -42,5 +46,10 @@ public class UserManager {
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 }

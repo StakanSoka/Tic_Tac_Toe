@@ -6,12 +6,14 @@ import bean.UserBotMap;
 import dao.UserBotMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
+@Service
 public class UserBotMapManager {
 
     private UserBotMapDAO userBotMapDAO;
