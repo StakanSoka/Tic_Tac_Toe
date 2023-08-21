@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import util.BooleanToYNConverter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -19,12 +18,13 @@ public class UserSymbolMap {
     @Column(nullable = false)
     private LocalDate acquisition;
 
-    @Column(nullable = false)
+    @Column(name = "active_for_player1")
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean active;
+    private boolean activeForPlayer1;
 
-    @Column(name = "activation_date")
-    private LocalDateTime activationDate;
+    @Column(name = "active_for_player2")
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean activeForPlayer2;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,12 +36,20 @@ public class UserSymbolMap {
 
     public UserSymbolMap(){}
 
-    public LocalDateTime getActivationDate() {
-        return activationDate;
+    public boolean isActiveForPlayer1() {
+        return activeForPlayer1;
     }
 
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
+    public void setActiveForPlayer1(boolean activeForPlayer1) {
+        this.activeForPlayer1 = activeForPlayer1;
+    }
+
+    public boolean isActiveForPlayer2() {
+        return activeForPlayer2;
+    }
+
+    public void setActiveForPlayer2(boolean activeForPlayer2) {
+        this.activeForPlayer2 = activeForPlayer2;
     }
 
     public int getId() {
@@ -58,14 +66,6 @@ public class UserSymbolMap {
 
     public void setAcquisition(LocalDate acquisition) {
         this.acquisition = acquisition;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean is_active) {
-        this.active = is_active;
     }
 
     public User getUser() {
@@ -88,11 +88,11 @@ public class UserSymbolMap {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserSymbolMap that)) return false;
-        return id == that.id && active == that.active && acquisition.equals(that.acquisition) && Objects.equals(activationDate, that.activationDate);
+        return id == that.id && activeForPlayer1 == that.activeForPlayer1 && activeForPlayer2 == that.activeForPlayer2 && acquisition.equals(that.acquisition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, acquisition, active, activationDate);
+        return Objects.hash(id, acquisition, activeForPlayer1, activeForPlayer2);
     }
 }

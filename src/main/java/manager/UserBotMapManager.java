@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,20 @@ public class UserBotMapManager {
         }
 
         return userBotMaps;
+    }
+
+    public List<UserBotMap> findUserBotMaps(int userId) {
+        return userBotMapDAO.findByUserId(userId);
+    }
+
+    public List<Bot> findUserBots(List<UserBotMap> userBotMaps) {
+        List<Bot> userBots = new ArrayList<>();
+
+        for (UserBotMap userBotMap : userBotMaps) {
+            userBots.add(userBotMap.getBot());
+        }
+
+        return userBots;
     }
 
     public void save(UserBotMap userBotMap) {

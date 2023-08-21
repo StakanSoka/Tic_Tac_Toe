@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tic tac toe</title>
+</head>
+<body>
+    <pre th:text="${gameData.gamingField.field}"></pre>
+
+    <div th:if="${gameData.winner} == ${gameData.gameStatuses.NOBODY}">
+        <form th:method="GET" th:action="@{play}">
+
+            <label for="playerTurn">Enter coordinates</label>
+            <input type="text" id="playerTurn" name="playerTurn">
+            <input type="submit" value="proceed">
+
+        </form>
+    </div>
+
+    <ul th:switch="${gameData.winner}">
+        <li th:case="${gameData.gameStatuses.PLAYER}">
+            <span>YOU WON!</span>
+        </li>
+
+        <li th:case="${gameData.gameStatuses.BOT}">
+            <span>You lost :(</span>
+        </li>
+
+        <li th:case="${gameData.gameStatuses.DRAW}">
+            <span>Nobody won  (_!_)</span>
+        </li>
+
+        <li th:case="${gameData.gameStatuses.NOBODY}">
+            <span>You will do that!</span>
+        </li>
+
+        <li th:case="*">ERROR...</li>
+    </ul>
+
+    <div th:unless="${gameData.winner} == ${gameData.gameStatuses.NOBODY}">
+        <form th:method="GET" th:action="@{difficulty}">
+            <button th:type="submit">Play again</button>
+        </form>
+
+        <form th:method="GET" th:action="@{/}">
+            <button th:type="submit">Main page</button>
+        </form>
+    </div>
+
+</body>
+</html>

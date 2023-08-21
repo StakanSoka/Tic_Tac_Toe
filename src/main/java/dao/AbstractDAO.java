@@ -55,7 +55,7 @@ public abstract class AbstractDAO<T, ID> {
 
         session.beginTransaction();
 
-        T entity = session.get(getEntityClass(), (Serializable) id);
+        T entity = session.get(getEntityClass(),id);
 
         session.getTransaction().commit();
         session.close();

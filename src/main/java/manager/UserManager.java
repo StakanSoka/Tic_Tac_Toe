@@ -1,5 +1,6 @@
 package manager;
 
+import bean.LayoutPattern;
 import bean.User;
 import dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserManager {
 
         user.setLogin(login);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
         user.setImage("root");
         user.setNickname(login);
         user.setRegistrationDate(LocalDate.now());

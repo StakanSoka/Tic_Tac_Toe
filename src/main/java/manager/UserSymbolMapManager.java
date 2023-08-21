@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,24 +31,36 @@ public class UserSymbolMapManager {
 
             userSymbolMap.setUser(user);
             userSymbolMap.setSymbol(symbol);
-            userSymbolMap.setActive(false);
             userSymbolMap.setAcquisition(LocalDate.now());
-            userSymbolMap.setActivationDate(null);
 
             userSymbolMaps.add(userSymbolMap);
         }
 
+        userSymbolMaps.get(0).setActiveForPlayer1(true); //we need to activate first two based symbols(x and 0)
+        userSymbolMaps.get(1).setActiveForPlayer2(true);
+
         return userSymbolMaps;
     }
 
-    public void activate(UserSymbolMap userSymbolMap) {
-        userSymbolMap.setActive(true);
-        userSymbolMap.setActivationDate(LocalDateTime.now());
-    }
+    public List<Symbol> findActiveUserSymbolByUserId(int userId) {
+        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findByUserId(userId);
+        List<Symbol> activatedSymbols = new ArrayList<>(userSymbolMaps.size());
 
-    public void deactivate(UserSymbolMap userSymbolMap) {
-        userSymbolMap.setActive(false);
-        userSymbolMap.setActivationDate(null);
+        for (UserSymbolMap userSymbolMap : userSymbolMaps) {
+            if (userSymbolMap.isActiveForPlayer1()) {
+                activatedSymbols.add(userSymbolMap.getSymbol());
+                break;
+            }
+        }
+
+        for (UserSymbolMap userSymbolMap : userSymbolMaps) {
+            if (userSymbolMap.isActiveForPlayer2()) {
+                activatedSymbols.add(userSymbolMap.getSymbol());
+                break;
+            }
+        }
+
+        return activatedSymbols;
     }
 
     @Autowired

@@ -1,5 +1,6 @@
 package dao;
 
+import bean.LayoutPattern;
 import bean.User;
 import config.HibernateFactoryConfig;
 import org.hibernate.Session;

@@ -15,7 +15,8 @@ CREATE TABLE user_bot_map(id INT PRIMARY KEY AUTO_INCREMENT, user_id INT NOT NUL
 CREATE TABLE  symbol(id INT PRIMARY KEY AUTO_INCREMENT, symbol CHAR(1) NOT NULL UNIQUE, price 	INT NOT NULL);
 
 CREATE TABLE user_symbol_map(id INT PRIMARY KEY AUTO_INCREMENT, user_id INT NOT NULL, symbol_id INT NOT NULL,
-                             acquisition DATE not null, active CHAR(1) NOT NULL, activation_date DATETIME,
+                             acquisition DATE not null, active_for_player1 CHAR(1) NOT NULL,
+                             active_for_player2 CHAR(1) NOT NULL,
                              FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
                              FOREIGN KEY(symbol_id) REFERENCES symbol(id) ON DELETE CASCADE);
 

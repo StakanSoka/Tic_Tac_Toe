@@ -1,6 +1,8 @@
 package bean;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,7 +36,7 @@ public class Bot {
             joinColumns = @JoinColumn(name = "bot_id"),
             inverseJoinColumns = @JoinColumn(name = "symbol_id")
     )
-    private Set<Symbol> symbols;
+    private List<Symbol> symbols;
 
     @ManyToMany
     @JoinTable(
@@ -42,7 +44,7 @@ public class Bot {
             joinColumns = @JoinColumn(name = "bot_id"),
             inverseJoinColumns = @JoinColumn(name = "layout_pattern_id")
     )
-    private Set<LayoutPattern> layoutPatterns;
+    private List<LayoutPattern> layoutPatterns;
 
     public Bot() {}
 
@@ -94,19 +96,19 @@ public class Bot {
         this.userBotMaps = userBotMaps;
     }
 
-    public Set<Symbol> getSymbols() {
+    public List<Symbol> getSymbols() {
         return symbols;
     }
 
-    public void setSymbols(Set<Symbol> symbols) {
+    public void setSymbols(List<Symbol> symbols) {
         this.symbols = symbols;
     }
 
-    public Set<LayoutPattern> getLayoutPatterns() {
+    public List<LayoutPattern> getLayoutPatterns() {
         return layoutPatterns;
     }
 
-    public void setLayoutPatterns(Set<LayoutPattern> layoutPatterns) {
+    public void setLayoutPatterns(List<LayoutPattern> layoutPatterns) {
         this.layoutPatterns = layoutPatterns;
     }
 

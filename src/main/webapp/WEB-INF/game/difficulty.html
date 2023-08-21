@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+</head>
+<body>
+    <h1>Choose difficulty</h1>
+    <form th:method="GET" th:action="@{start}">
+        <ul>
+            <li th:each="bot : ${bots}">
+                <button type="submit" name="bot" th:value="${bot.id}">
+                    <span th:text="${bot.name}"></span>
+                </button>
+
+            </li>
+        </ul>
+    </form>
+</body>
+</html>

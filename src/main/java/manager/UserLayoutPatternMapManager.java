@@ -3,12 +3,15 @@ package manager;
 import bean.LayoutPattern;
 import bean.User;
 import bean.UserLayoutPatternMap;
+import dao.LayoutPatternDAO;
 import dao.UserLayoutPatternMapDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @Service
@@ -18,6 +21,17 @@ public class UserLayoutPatternMapManager {
 
     public void save(UserLayoutPatternMap userLayoutPatternMap) {
         userLayoutPatternMapDAO.save(userLayoutPatternMap);
+    }
+
+    public LayoutPattern findActiveLayoutPatternByUserId(int userId) {
+        List<UserLayoutPatternMap> userLayoutPatternMaps = userLayoutPatternMapDAO.findAllByUserId(userId);
+        Optional<UserLayoutPatternMap> userLayoutPatternMapOptional = userLayoutPatternMaps.stream().
+                filter(UserLayoutPatternMap::isActive).
+                findAny();
+        UserLayoutPatternMap userLayoutPatternMap = userLayoutPatternMapOptional.orElse(null);
+
+        if (userLayoutPatternMap == null) return null;
+        return userLayoutPatternMap.getLayoutPattern();
     }
 
     public UserLayoutPatternMap create(User user, LayoutPattern layoutPattern) {

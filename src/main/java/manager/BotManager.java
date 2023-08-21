@@ -14,8 +14,21 @@ public class BotManager {
 
     private BotDAO botDAO;
 
+    public Bot find(int id) {
+        return botDAO.find(id);
+    }
+
     public List<Bot> findAll() {
         return botDAO.findAll();
+    }
+
+    public Bot findWithSymbolsAndLayoutPatterns(int id) {
+        Bot bot = botDAO.find(id);
+
+        bot.setSymbols(botDAO.findBotSymbols(id));
+        bot.setLayoutPatterns(botDAO.findBotLayoutPatterns(id));
+
+        return bot;
     }
 
     @Autowired

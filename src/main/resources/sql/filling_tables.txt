@@ -11,9 +11,14 @@ insert into symbol(symbol, price)
 values ('X', 0);
 
 insert into symbol(symbol, price)
-values ('O', 0)
+values ('O', 0);
 
 insert into layout_pattern(position1, position2, price)
 values (' X       X \n   X   X   \n     X     \n   X   X   \n X       X \n',
-        '   X X X   \n  X     X  \n  X     X  \n  X     X  \n   X X X   \n', 0)
+        '   X X X   \n  X     X  \n  X     X  \n  X     X  \n   X X X   \n', 0);
 
+insert into bot_layout_pattern_map (bot_id, layout_pattern_id)
+values (1, 1);
+
+insert into bot_symbol_map (bot_id, symbol_id)
+values (1, 1), (1, 2);
