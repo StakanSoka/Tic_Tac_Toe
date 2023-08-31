@@ -27,7 +27,7 @@ CREATE TABLE bot_symbol_map(id INT PRIMARY KEY AUTO_INCREMENT, bot_id INT NOT NU
 CREATE TABLE order_status(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(30) NOT NULL);
 
 CREATE TABLE user_order(id INT PRIMARY KEY AUTO_INCREMENT, created_date DATE NOT NULL, modified_date DATE NOT NULL,
-                        total_sum INT NOT NULL, status_id INT NOT NULL, user_id INT NOT NULL,
+                        status_id INT NOT NULL, user_id INT NOT NULL,
                         FOREIGN KEY (status_id) REFERENCES order_status(id) ON DELETE CASCADE,
                         FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE);
 

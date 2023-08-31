@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tic tac toe</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/appstyles.css">
+</head>
+
+<body style="background-color: #f0f0f0;color: #2b2b2b">
+
+<header th:insert="fragments/header :: header"></header>
+
+
+<div class="container justify-content-center text-center mt-5">
+
+    <div class="row justify-content-center text-center">
+        <div class="col-4 mb-4 border border-dark rounded" style="background-color:#dcdcdc">
+            <img th:src="'/static/images/bot_avatars/' + ${gameData.beanBot.image} + '.png'" alt="image was not found" width="150">
+            <br>
+            <span class="scary-text animation" th:text="${gameData.beanBot.name}"></span>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <hr class="ms-5 me-5">
+
+        <div class="col-4"></div>
+
+        <div class="col-4">
+            <div class="game-board">
+                <pre th:text="${gameData.gamingField.field}" style="line-height: 1.25;"></pre>
+
+                <form th:action="@{play}">
+                    <div class="btn-group-vertical game-buttons">
+                        <div class="btn-group">
+                            <button type="submit" name="playerTurn" value="00"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="01"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="02"
+                                    class="btn game-cell"></button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" name="playerTurn" value="10"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="11"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="12"
+                                    class="btn game-cell"></button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" name="playerTurn" value="20"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="21"
+                                    class="btn game-cell"></button>
+                            <button type="submit" name="playerTurn" value="22"
+                                    class="btn game-cell"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-4 d-flex align-items-center justify-content-center" style="font-size: 25px;">
+            <div class="card bg-dark text-light pt-0 pb-0 ps-0 pe-0">
+
+                <div class="card-header">Game Status</div>
+
+                <div class="card-body">
+                    <ul th:switch="${gameData.winner}" style="list-style-type: none;" class="ps-1 ms-0">
+                        <li th:case="${gameData.gameStatuses.PLAYER}" class="ps-1 pe-1 ms-0" style="color:green">
+                            <span>YOU WON!</span>
+                        </li>
+
+                        <li th:case="${gameData.gameStatuses.BOT}" class="ps-1 pe-1 ms-0" style="color: red;">
+                            <span>You lost :(</span>
+                        </li>
+
+                        <li th:case="${gameData.gameStatuses.DRAW}" class="ps-1 pe-1 ms-0">
+                            <span>Nobody won  (_!_)</span>
+                        </li>
+
+                        <li th:case="${gameData.gameStatuses.NOBODY}" class="ps-1 pe-1 ms-0">
+                            <span>Processing</span>
+                        </li>
+
+                        <li th:case="*" style="color: red;">ERROR...</li>
+                    </ul>
+                </div>
+                <div class="card-footer" th:if="${gameData.gameStatuses.PLAYER} == ${gameData.winner}">
+                    <span>Your Reward</span>
+                    <br>
+                    <span th:text="${gameData.beanBot.coin}"></span>
+                    <img src="/static/images/project_images/price-coins.png" alt="coin picture hasn't been found" width="30">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="ms-5 me-5">
+
+    <div class="ms-3 mt-2 btn-group" th:unless="${gameData.winner} == ${gameData.gameStatuses.NOBODY}">
+        <form th:method="GET" th:action="@{/game/start}" class="mb-2 me-3">
+            <input type="hidden" th:action="@{/game/start}" th:value="${gameData.botId}" name="botId">
+            <button class="btn btn-dark btn-lg" type="submit">Play Again</button>
+        </form>
+
+        <form th:method="GET" th:action="@{/}">
+            <button class="btn btn-dark btn-lg" type="submit" value="proceed">Main Page</button>
+        </form>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer :: footer"></footer>
+
+</body>
+</html>

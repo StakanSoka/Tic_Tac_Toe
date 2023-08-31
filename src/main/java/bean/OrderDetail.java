@@ -17,6 +17,10 @@ public class OrderDetail {
     private int tableId;
 
     @ManyToOne
+    @JoinColumn(name = "user_order_id")
+    private UserOrder userOrder;
+
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
@@ -44,6 +48,14 @@ public class OrderDetail {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public UserOrder getUserOrder() {
+        return userOrder;
+    }
+
+    public void setUserOrder(UserOrder userOrder) {
+        this.userOrder = userOrder;
     }
 
     @Override

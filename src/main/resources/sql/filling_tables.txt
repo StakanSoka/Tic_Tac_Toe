@@ -22,3 +22,6 @@ values (1, 1);
 
 insert into bot_symbol_map (bot_id, symbol_id)
 values (1, 1), (1, 2);
+
+insert into order_status(name)
+values ('PENDING PAYMENT');

@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container">
+        <ul class="navbar-nav">
+            <li class="pt-1" data-bs-toggle="tooltip" title="to the main page">
+                <a th:href="@{/}" class="navbar-brand">
+                    <img src="/static/images/project_images/cross1.png" alt="the cross not found" height="33"
+                         width="22">
+                    TIC TAC TOE
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/shop}">SHOP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/cart}">CART</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/inventory}">INVENTORY</a>
+            </li>
+        </ul>
+
+        <div class="text-light" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" th:href="@{/login}">login</a>
+            <a class="nav-link" th:href="@{/user/registration}">registration</a>
+        </div>
+
+        <div class="text-light" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/logout}">logout</a>
+        </div>
+
+    </div>
+</nav>

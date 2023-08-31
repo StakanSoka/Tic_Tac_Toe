@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Service
@@ -19,19 +21,34 @@ public class UserLayoutPatternMapManager {
 
     private UserLayoutPatternMapDAO userLayoutPatternMapDAO;
 
+    public UserLayoutPatternMap find(int userId, int layoutPatternId) {
+        return userLayoutPatternMapDAO.find(userId, layoutPatternId);
+    }
+
     public void save(UserLayoutPatternMap userLayoutPatternMap) {
         userLayoutPatternMapDAO.save(userLayoutPatternMap);
     }
 
-    public LayoutPattern findActiveLayoutPatternByUserId(int userId) {
+    public List<LayoutPattern> findUserLayoutPatterns(User user) {
+        List<UserLayoutPatternMap> userLayoutPatternMaps = userLayoutPatternMapDAO.findAllByUserId(user.getId());
+        List<LayoutPattern> layoutPatterns = userLayoutPatternMaps.stream()
+                .map(UserLayoutPatternMap::getLayoutPattern)
+                .collect(Collectors.toList());
+
+        return layoutPatterns;
+    }
+
+    public UserLayoutPatternMap findActiveLayoutPatternByUserId(int userId) {
         List<UserLayoutPatternMap> userLayoutPatternMaps = userLayoutPatternMapDAO.findAllByUserId(userId);
         Optional<UserLayoutPatternMap> userLayoutPatternMapOptional = userLayoutPatternMaps.stream().
                 filter(UserLayoutPatternMap::isActive).
                 findAny();
-        UserLayoutPatternMap userLayoutPatternMap = userLayoutPatternMapOptional.orElse(null);
 
-        if (userLayoutPatternMap == null) return null;
-        return userLayoutPatternMap.getLayoutPattern();
+        return userLayoutPatternMapOptional.orElse(null);
+    }
+
+    public void update(UserLayoutPatternMap userLayoutPatternMap) {
+        userLayoutPatternMapDAO.update(userLayoutPatternMap);
     }
 
     public UserLayoutPatternMap create(User user, LayoutPattern layoutPattern) {
@@ -43,6 +60,16 @@ public class UserLayoutPatternMapManager {
         userLayoutPatternMap.setActive(false);
 
         return userLayoutPatternMap;
+    }
+
+    public List<UserLayoutPatternMap> create(User user, List<LayoutPattern> layoutPatterns) {
+        List<UserLayoutPatternMap> userLayoutPatternMaps = new ArrayList<>(layoutPatterns.size());
+
+        for (LayoutPattern layoutPattern : layoutPatterns) {
+            userLayoutPatternMaps.add(create(user, layoutPattern));
+        }
+
+        return userLayoutPatternMaps;
     }
 
     @Autowired

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registration</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/appstyles.css">
+</head>
+
+<body>
+
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container" style="margin-top: 10%">
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Registration Form</h2>
+                    <form th:method="post" th:action="@{/user/registration}" th:object="${userDTO}">
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Login</label>
+                            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="error-message"></span>
+                            <input type="text" class="form-control" id="login" placeholder="Enter login"
+                                   name="login" th:field="*{login}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password"
+                                   name="password" th:field="*{password}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmed-password" class="form-label">Confirm Password</label>
+                            <span th:if="${#fields.hasErrors('confirmedPassword')}" th:errors="*{confirmedPassword}" th:field="*{confirmedPassword}" class="error-message"></span>
+                            <input type="password" class="form-control" id="confirmed-password" placeholder="Confirm password"
+                                   name="confirmed-password" th:field="*{confirmedPassword}" required >
+                        </div>
+                        <button type="submit" class="btn btn-light">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer th:insert="fragments/footer :: footer"></footer>
+
+</body>
+</html>

@@ -25,6 +25,8 @@ public class UserDetailManager implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         User user = userDAO.findByLogin(login);
 
+        if (user == null) throw new UsernameNotFoundException("Invalid credentials");
+
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), grantedAuthorities);

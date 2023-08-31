@@ -2,10 +2,8 @@ package game.elements;
 
 import bean.LayoutPattern;
 import bean.Symbol;
-import exception.NoSuchCellStatementException;
-import util.Constants;
 
-public class GamingCell {
+public class GamingCell implements Cloneable {
 
     private int statement;
     private LayoutPattern layoutPattern;
@@ -16,15 +14,10 @@ public class GamingCell {
         GamingCell clone = (GamingCell) super.clone();
 
         clone.setStatement(statement);
+        clone.setSymbol(symbol);
+        clone.setLayoutPattern(layoutPattern);
 
         return clone;
-    }
-
-    public void changeStatement(int newStatement) throws NoSuchCellStatementException {
-        if (newStatement != Constants.Game.NOBODY && newStatement != Constants.Game.PLAYER && newStatement != Constants.Game.BOT) {
-            throw new NoSuchCellStatementException();
-        }
-        statement = newStatement;
     }
 
     public int getStatement() {

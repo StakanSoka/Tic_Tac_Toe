@@ -4,9 +4,10 @@ import bean.Symbol;
 import util.Constants;
 import util.GameUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class GamingField {
+public class GamingField implements Cloneable {
 
     private StringBuilder field;
     private List<List<GamingCell>> cells;
@@ -35,8 +36,6 @@ public class GamingField {
         if (turn == Constants.Game.PLAYER) {
             positions = playerPositions;
             symbol = playerSymbol;
-            row--;
-            column--;
         }
         else {
             positions = botPositions;
@@ -123,13 +122,18 @@ public class GamingField {
     @Override
     public GamingField clone() throws CloneNotSupportedException {
         GamingField clonedGamingField = (GamingField) super.clone();
-        List<List<GamingCell>> clonedGamingCells = clonedGamingField.getCells();
+        List<List<GamingCell>> clonedGamingCells = new ArrayList<>();
 
-        for (List<GamingCell> clonedGamingCell : clonedGamingCells) {
-            for (int j = 0; j < clonedGamingCell.size(); j++) {
-                clonedGamingCell.set(j, clonedGamingCell.get(j).clone());
+        for (List<GamingCell> row : cells) {
+            List<GamingCell> clonedRow = new ArrayList<>();
+            for (GamingCell cell : row) {
+                clonedRow.add(cell.clone());
             }
+            clonedGamingCells.add(clonedRow);
         }
+
+        clonedGamingField.setCells(clonedGamingCells);
+        clonedGamingField.setField(new StringBuilder(field));
 
         return clonedGamingField;
     }

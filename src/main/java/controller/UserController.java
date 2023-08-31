@@ -1,15 +1,18 @@
 package controller;
 
 import bean.*;
+import dto.UserDTO;
 import manager.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import util.Constants;
+import validator.UserValidator;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,27 +27,44 @@ public class UserController {
     private LayoutPatternManager layoutPatternManager;
     private UserLayoutPatternMapManager userLayoutPatternMapManager;
 
+    private UserValidator userValidator;
 
-    @GetMapping("/create")
-    public String create() {
-        return "form";
+    @GetMapping("/registration")
+    public String registration(Model model) {
+
+        model.addAttribute("userDTO", new UserDTO());
+
+        return "registration";
     }
 
-    @PostMapping("/create")
-    public String create(@RequestParam("login") String login, @RequestParam("password") String password) {
-        User user = userManager.create(login, password);
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute @Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
+        User user;
         List<Bot> bots = botManager.findAll();
         List<Symbol> basedSymbols = symbolManager.findBasedSymbols();
         LayoutPattern basedLayoutPattern = layoutPatternManager.find(Constants.BasedLayoutPattern.ID);
+        UserLayoutPatternMap userLayoutPatternMap;
+        List<UserSymbolMap> userSymbolMaps;
+
+        userValidator.validate(userDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult);
+            return "registration";
+        }
+
+        user = userManager.userDTOtoUserBean(userDTO);
 
         userManager.save(user);
 
         userBotMapManager.create(user, bots).forEach(userBotMap -> userBotMapManager.save(userBotMap));
 
-        userSymbolMapManager.create(user, basedSymbols).forEach(
-                basedSymbol -> userSymbolMapManager.save(basedSymbol));
+        userSymbolMaps = userSymbolMapManager.create(user, basedSymbols);
+        userSymbolMaps.get(0).setActiveForPlayer1(true); //we need to activate first two based symbols(x and 0)
+        userSymbolMaps.get(1).setActiveForPlayer2(true);
+        userSymbolMaps.forEach(basedSymbol -> userSymbolMapManager.save(basedSymbol));
 
-        UserLayoutPatternMap userLayoutPatternMap = userLayoutPatternMapManager.create(user, basedLayoutPattern);
+        userLayoutPatternMap = userLayoutPatternMapManager.create(user, basedLayoutPattern);
         userLayoutPatternMap.setActive(true);
 
         userLayoutPatternMapManager.save(userLayoutPatternMap);
@@ -52,14 +72,72 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping("/inventory")
+    public String inventory(Model model, Authentication authentication) {
+        User user = userManager.findByLogin(authentication.getName());
+        List<Symbol> symbols = userSymbolMapManager.findUserSymbols(user);
+        List<LayoutPattern> layoutPatterns = userLayoutPatternMapManager.findUserLayoutPatterns(user);
+        Symbol activatedSymbolForPlayer1 = userSymbolMapManager.findActiveSymbolForPlayer1(user.getId()).getSymbol();
+        Symbol activatedSymbolForPlayer2 = userSymbolMapManager.findActiveSymbolForPlayer2(user.getId()).getSymbol();
+        LayoutPattern activatedLayoutPattern = userLayoutPatternMapManager.findActiveLayoutPatternByUserId(user.getId()).getLayoutPattern();
+
+        symbols.remove(activatedSymbolForPlayer1);
+        symbols.remove(activatedSymbolForPlayer2);
+        layoutPatterns.remove(activatedLayoutPattern);
+
+        model.addAttribute("activatedSymbolForPlayer1", activatedSymbolForPlayer1);
+        model.addAttribute("activatedSymbolForPlayer2", activatedSymbolForPlayer2);
+        model.addAttribute("activatedLayoutPattern", activatedLayoutPattern);
+        model.addAttribute("user", user);
+        model.addAttribute("symbols", symbols);
+        model.addAttribute("layoutPatterns", layoutPatterns);
+
+        return "inventory";
     }
 
-    @GetMapping("/hello")
-    public String helloUser() {
-        return "hello-user";
+    @PostMapping("/inventory/set-active-symbol-player1")
+    public String inventorySetActiveSymbolPlayer1(@RequestParam("symbolId") int symbolId, Authentication authentication) {
+        User user = userManager.findByLogin(authentication.getName());
+        UserSymbolMap oldActiveSymbolMap = userSymbolMapManager.findActiveSymbolForPlayer1(user.getId());
+        UserSymbolMap newActiveSymbolMap = userSymbolMapManager.find(user.getId(), symbolId);
+
+        oldActiveSymbolMap.setActiveForPlayer1(false);
+        userSymbolMapManager.update(oldActiveSymbolMap);
+
+        newActiveSymbolMap.setActiveForPlayer1(true);
+        userSymbolMapManager.update(newActiveSymbolMap);
+
+        return "redirect:/user/inventory";
+    }
+
+    @PostMapping("/inventory/set-active-symbol-player2")
+    public String inventorySetActiveSymbolPlayer2(@RequestParam("symbolId") int symbolId, Authentication authentication) {
+        User user = userManager.findByLogin(authentication.getName());
+        UserSymbolMap oldActiveSymbolMap = userSymbolMapManager.findActiveSymbolForPlayer2(user.getId());
+        UserSymbolMap newActiveSymbolMap = userSymbolMapManager.find(user.getId(), symbolId);
+
+        oldActiveSymbolMap.setActiveForPlayer2(false);
+        userSymbolMapManager.update(oldActiveSymbolMap);
+
+        newActiveSymbolMap.setActiveForPlayer2(true);
+        userSymbolMapManager.update(newActiveSymbolMap);
+
+        return "redirect:/user/inventory";
+    }
+
+    @PostMapping("/inventory/set-active-layout-pattern")
+    public String inventorySetActiveLayoutPattern(@RequestParam("layoutPatternId") int layoutPatternId, Authentication authentication) {
+        User user = userManager.findByLogin(authentication.getName());
+        UserLayoutPatternMap oldActiveLayoutPatternMap = userLayoutPatternMapManager.findActiveLayoutPatternByUserId(user.getId());
+        UserLayoutPatternMap newActiveLayoutPatternMap = userLayoutPatternMapManager.find(user.getId(), layoutPatternId);
+
+        oldActiveLayoutPatternMap.setActive(false);
+        userLayoutPatternMapManager.update(oldActiveLayoutPatternMap);
+
+        newActiveLayoutPatternMap.setActive(true);
+        userLayoutPatternMapManager.update(newActiveLayoutPatternMap);
+
+        return "redirect:/user/inventory";
     }
 
     @Autowired
@@ -95,5 +173,10 @@ public class UserController {
     @Autowired
     public void setUserLayoutPatternMapManager(UserLayoutPatternMapManager userLayoutPatternMapManager) {
         this.userLayoutPatternMapManager = userLayoutPatternMapManager;
+    }
+
+    @Autowired
+    public void setUserValidator(UserValidator userValidator) {
+        this.userValidator = userValidator;
     }
 }

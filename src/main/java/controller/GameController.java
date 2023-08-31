@@ -20,23 +20,13 @@ import java.util.List;
 @SessionAttributes("gameData")
 public class GameController {
 
-    private UserBotMapManager userBotMapManager;
     private UserManager userManager;
     private BotManager botManager;
     private UserLayoutPatternMapManager userLayoutPatternMapManager;
     private UserSymbolMapManager userSymbolMapManager;
 
-    @GetMapping("/difficulty")
-    public String chooseBotDifficulty(Authentication authentication, Model model) {
-        User user = userManager.findByLogin(authentication.getName());
-        List<UserBotMap> userBotMaps = userBotMapManager.findUserBotMaps(user.getId());
-
-        model.addAttribute("bots", userBotMapManager.findUserBots(userBotMaps));
-        return "game/difficulty";
-    }
-
     @GetMapping("/start")
-    public String startGame(@RequestParam("bot") Integer botId, Authentication authentication, Model model,
+    public String startGame(@RequestParam("botId") Integer botId, Authentication authentication, Model model,
                             @ModelAttribute("gameData") GameData gameData) {
         User user = userManager.findByLogin(authentication.getName());
         Bot beanBot = botManager.findWithSymbolsAndLayoutPatterns(botId);
@@ -44,9 +34,9 @@ public class GameController {
         GamingField gamingField = new GamingField();
 
         int firstOrder = ((int)(Math.random() * 2)) % 2 == 0 ? Constants.Game.PLAYER : Constants.Game.BOT;
-        LayoutPattern userActiveLayoutPattern = userLayoutPatternMapManager.findActiveLayoutPatternByUserId(user.getId());
+        LayoutPattern userActiveLayoutPattern = userLayoutPatternMapManager.findActiveLayoutPatternByUserId(user.getId()).getLayoutPattern();
         LayoutPattern botActiveLayoutPattern = beanBot.getLayoutPatterns().stream().findAny().orElse(null);
-        List<Symbol> userActiveSymbols = userSymbolMapManager.findActiveUserSymbolByUserId(user.getId());
+        List<Symbol> userActiveSymbols = userSymbolMapManager.findActiveUserSymbolsByUserId(user.getId());
         List<Symbol> botActiveSymbols = beanBot.getSymbols();
         GameUtil.fillPlayersSettings(userActiveLayoutPattern, userActiveSymbols,
                 botActiveLayoutPattern, botActiveSymbols, gamingField, firstOrder);
@@ -56,58 +46,60 @@ public class GameController {
         gameData.setBrainBot(brainBot);
         gameData.setWinner(GameStatuses.NOBODY);
         gameData.setGameStatuses(new GameStatuses());
+        gameData.setBotId(botId);
         model.addAttribute("gameData", gameData);
 
         if (firstOrder == Constants.Game.BOT) {
             gamingField.update(brainBot.playRandomTurn(gamingField), Constants.Game.BOT);
         }
 
-        return "game/game";
+        return "game";
     }
 
     @GetMapping("/play")
     public String play(@RequestParam("playerTurn") String userTurn, @ModelAttribute("gameData") GameData gameData,
-                       Model model) {
+                       Authentication authentication, Model model) throws CloneNotSupportedException {
+        User user;
         int userCoordinates = Integer.parseInt(userTurn);
         GamingField gamingField = gameData.getGamingField();
-        int winner = gameData.getWinner();
+
         model.addAttribute("gameData", gameData);
 
-        if (winner != Constants.Game.NOBODY) { // user tries cheat through get request
-            return "game/game";
+        if (gameData.getWinner() != Constants.Game.NOBODY) { // user tries cheat through get request
+            return "game";
         }
+        if (!GameUtil.findPossibleTurns(gamingField).contains(userCoordinates)) {
+            return "game";
+        }
+
 
         gamingField.update(userCoordinates, Constants.Game.PLAYER);
-        if (isGameFinished(gameData, gamingField)) return "game/game";
+        if (gamingField.checkWinner() == Constants.Game.PLAYER) {
+            GameUtil.finishGame(gameData, Constants.Game.PLAYER);
 
-        gamingField.update(gameData.getBrainBot().playRandomTurn(gamingField), Constants.Game.BOT);
-        isGameFinished(gameData, gamingField);
+            user = userManager.findByLogin(authentication.getName());
+            user.setCoin(user.getCoin() + gameData.getBeanBot().getCoin());
+            userManager.update(user);
 
-        return "game/game";
-    }
-
-    private boolean isGameFinished(@ModelAttribute("gameData") GameData gameData, GamingField gamingField) {
-        int winner;
-        winner = gamingField.checkWinner();
-        if (winner != Constants.Game.NOBODY) {
-            gameData.setWinner(winner);
-            return true;
+            return "game";
+        } else if (gamingField.isDraw()) {
+            GameUtil.finishGame(gameData, Constants.Game.DRAW);
+            return "game";
         }
-        if (gamingField.isDraw()) {
-            gameData.setWinner(Constants.Game.DRAW);
-            return true;
+
+        gamingField.update(gameData.getBrainBot().turn(gamingField), Constants.Game.BOT);
+        if (gamingField.checkWinner() == Constants.Game.BOT) {
+            GameUtil.finishGame(gameData, Constants.Game.BOT);
+        } else if (gamingField.isDraw()) {
+            GameUtil.finishGame(gameData, Constants.Game.DRAW);
         }
-        return false;
+
+        return "game";
     }
 
     @ModelAttribute("gameData")
-    public GameData gamingFieldAttribute() {
+    public GameData gameDataAttribute() {
         return new GameData();
-    }
-
-    @Autowired
-    public void setUserBotMapManager(UserBotMapManager userBotMapManager) {
-        this.userBotMapManager = userBotMapManager;
     }
 
     @Autowired

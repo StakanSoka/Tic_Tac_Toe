@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/appstyles.css">
+
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container-fluid mt-5 mb-5">
+
+    <div class="row ms-3 me-3" style="text-align: center">
+        <div class="col-3 ps-0 pe-0" style="background-color:#dcdcdc">
+            <h2 class="text-bg-dark pt-3 pb-3">About the game</h2>
+            <span style="text-align: left; display: block;">
+                Dive into the world of a simple tic-tac-toe game, spiced up with clever bots as opponents.
+                You can even shop for cool stuff like different looks and symbols.
+                Challenge various AI players, each with their own unique strategies.
+                Win matches, earn rewards, and enjoy the game to the fullest!
+            </span>
+        </div>
+
+        <div class="col-6">
+            <pre th:text="${pole}" style="line-height: 1.25;"></pre>
+        </div>
+
+        <div class="col-3 ps-0 pe-0" style="background-color:#dcdcdc" sec:authorize="hasRole('ADMIN')">
+            <h2 class="text-bg-dark pt-3 pb-3">Admin</h2>
+
+            <div class="btn-group-vertical d-flex justify-content-end">
+                <a th:href="@{/admin/users}" class="btn btn-secondary">USERS</a>
+                <a th:href="@{/admin/symbols}" class="btn btn-secondary mt-1 mb-1">SYMBOLS</a>
+                <a th:href="@{/admin/layout-patterns}" class="btn btn-secondary">LAYOUT PATTERNS</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <hr style="margin-left: 300px; margin-right: 300px">
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12" style="text-align: center">
+            <div class="btn-group">
+                <button type="submit" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+                        style="padding: 40px 120px">PLAY
+                </button>
+                <div class="dropdown-menu dropdown-menu-dark">
+                    <div th:each="bot : ${bots}">
+                        <a th:href="@{/game/start(botId=${bot.id})}" th:text="${bot.name}" class="dropdown-item"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer :: footer"></footer>
+
+</body>
+</html>

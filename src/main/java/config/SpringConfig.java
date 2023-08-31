@@ -7,12 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.resource.WebJarsResourceResolver;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = {"controller", "manager", "dao", "config"})
+@ComponentScan(basePackages = {"controller", "manager", "dao", "config", "validator"})
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
@@ -31,9 +33,12 @@ public class SpringConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // @formatter:off
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:/resources/")
-                .setCachePeriod(31556926);
+        registry.addResourceHandler("/webjars/**", "/static/**")
+                .addResourceLocations(
+                        "/webjars/", "classpath:/static/")
+                .setCachePeriod(31556926)
+                .resourceChain(true)
+                .addResolver(new WebJarsResourceResolver());
         // @formatter:on
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
@@ -52,6 +57,7 @@ public class SpringConfig implements WebMvcConfigurer {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
+        templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
 

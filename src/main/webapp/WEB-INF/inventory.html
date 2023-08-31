@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inventory</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/appstyles.css">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container">
+
+    <div class="row justify-content-center mt-5 mb-4">
+        <div class="col-4 card bg-dark text-light">
+            <div class="card-header text-center">
+                <span th:text="${user.nickname}" style="font-size: 25px"></span>
+            </div>
+            <div class="card-body">
+                <span>registration date:</span>
+                <span th:text="${user.registrationDate}"></span>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <span th:text="${user.coin}" style="font-size: 20px"></span>
+                    <img src="/static/images/project_images/price-coins.png" alt="coin image not found" width="30">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 style="text-align: center">User Inventory</h3>
+    <hr class="ms-5 me-5">
+
+    <div class="row" style="background-color:#dcdcdc">
+        <div class="row col-4">
+            <h4 class="text-center mt-4">ACTIVATED SYMBOLS</h4>
+            <div class="text-center col-6">
+                <div class="card bg-dark text-light ms-5">
+                    <div class="card-header">
+                        <span th:text="${activatedSymbolForPlayer1.symbol}"></span>
+                    </div>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-light">player 1</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center col-6">
+                <div class="card bg-dark text-light me-5">
+                    <div class="card-header">
+                        <span th:text="${activatedSymbolForPlayer2.symbol}"></span>
+                    </div>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-light">player 2</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <h4 class="text-center mb-4 mt-4">ACTIVATED LAYOUT PATTERN</h4>
+            <div class="row ms-5 me-5 d-flex justify-content-center">
+                <div class="col-4 mb-3">
+                    <div class="card bg-dark text-light">
+                        <div class="card-header">
+                            <div class="d-flex">
+                                <pre class="ms-0 me-4" th:text="${activatedLayoutPattern.position1}"></pre>
+                                <pre class="ms-0 me-0" th:text="${activatedLayoutPattern.position2}"></pre>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-light">player 1</a>
+                                    <a href="#" class="btn btn-light">player 2</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="ms-5 me-5">
+
+    <div class="row" style="background-color:#dcdcdc">
+
+        <div class="col-4">
+            <div class="row text-center">
+                <h4 class="mb-4 mt-4">SYMBOLS</h4>
+                <div class="col-4 mb-3" th:each="symbol : ${symbols}">
+                    <div class="card bg-secondary text-light">
+                        <div class="card-header">
+                            <span th:text="${symbol.symbol}"></span>
+                        </div>
+                        <div class="card-footer">
+                            <div>
+                                <form th:action="@{/user/inventory/set-active-symbol-player1}" th:method="post">
+                                    <input type="hidden" name="symbolId" th:value="${symbol.id}">
+                                    <button type="submit" class="btn btn-success mb-1">player 1</button>
+                                </form>
+
+                                <form th:action="@{/user/inventory/set-active-symbol-player2}" th:method="post">
+                                    <input type="hidden" name="symbolId" th:value="${symbol.id}">
+                                    <button type="submit" class="btn btn-success mb-1">player 2</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="row ms-5 me-5 text-center">
+                <h4 class="mb-4 mt-4">LAYOUT PATTERNS</h4>
+                <div class="col-4 mb-3" th:each="layoutPattern : ${layoutPatterns}">
+                    <div class="card bg-secondary text-light">
+                        <div class="card-header">
+                            <div class="d-flex">
+                                <pre class="ms-0 me-4" th:text="${layoutPattern.position1}"></pre>
+                                <pre class="ms-0 me-0" th:text="${layoutPattern.position2}"></pre>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/user/inventory/set-active-layout-pattern}" th:method="post">
+                                <input type="hidden" name="layoutPatternId" th:value="${layoutPattern.id}">
+                                <button class="btn btn-success">player 1 player 2</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="ms-5 me-5 mt-4 mb-4">
+
+
+</div>
+
+<footer th:insert="fragments/footer :: footer"></footer>
+
+</body>
+</html>

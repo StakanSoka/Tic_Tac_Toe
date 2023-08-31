@@ -1,0 +1,57 @@
+body {
+    background-color: #f0f0f0;
+    color: #2b2b2b
+}
+
+.fixed-button {
+    width: 75px;
+    height: 40px;
+}
+
+.error-message {
+    color : red;
+    text-align: center;
+}
+
+.lp-textarea {
+    resize: none;
+    letter-spacing: 5px;
+}
+
+.game-board {
+    position: relative;
+}
+
+.game-buttons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+
+    padding-top: 100px;
+
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.game-cell {
+    padding-top: 52px;
+    padding-bottom: 52px;
+}
+
+.scary-text {
+    font-family: 'Creepster', cursive;
+    font-size: 2em;
+    color: #1f1f1f;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.animation {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

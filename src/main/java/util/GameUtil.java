@@ -2,8 +2,10 @@ package util;
 
 import bean.LayoutPattern;
 import bean.Symbol;
+import game.GameData;
 import game.brain.Bot;
 import game.brain.EasyBot;
+import game.brain.NormalBot;
 import game.elements.GamingCell;
 import game.elements.GamingField;
 
@@ -31,19 +33,19 @@ public class GameUtil {
         return pole;
     }
 
-    public static List<Integer> findPossibleCombinations(GamingField gamingField) {
-        List<Integer> possibleCombinationsCoordinates = new ArrayList<>();
+    public static List<Integer> findPossibleTurns(GamingField gamingField) {
+        List<Integer> possibleTurns = new ArrayList<>();
         List<List<GamingCell>> gamingCells = gamingField.getCells();
 
         for (int i = 0; i < gamingCells.size(); i++) {
             for (int j = 0; j < gamingCells.get(i).size(); j++) {
                 if (gamingCells.get(i).get(j).getStatement() == Constants.Game.NOBODY) {
-                    possibleCombinationsCoordinates.add(10 * i + j); // first number is row index second one is column index
+                    possibleTurns.add(10 * i + j); // first number is row index second one is column index
                 }
             }
         }
 
-        return possibleCombinationsCoordinates;
+        return possibleTurns;
     }
 
     public static Bot findBotByDifficulty(String difficulty) {
@@ -51,6 +53,7 @@ public class GameUtil {
 
         switch (difficulty) {
             case "easy" -> bot = new EasyBot();
+            case "normal" -> bot = new NormalBot();
             default -> bot = null;
         }
 
@@ -87,22 +90,7 @@ public class GameUtil {
         }
     }
 
-    public static void insertCellIntoField(GamingField gamingField, Symbol symbol, String positions, int x, int y) {
-        int startI = (Constants.Game.CELL_HEIGHT + 1) * x;
-        int endI = startI + Constants.Game.CELL_HEIGHT;
-        int startJ = (Constants.Game.CELL_WIDTH + 1) * y;
-        int endJ = startJ + Constants.Game.CELL_WIDTH;
-        StringBuilder field = gamingField.getField();
-        char positionChar;
-        int positionsK = 0;
-
-        for (int i = startI; i < endI; i++) {
-            for (int j = startJ; j < endJ; j++) {
-                positionChar = positions.charAt(positionsK);
-                if (positionChar == 'X') field.setCharAt(i + j, symbol.getSymbol());
-                positionsK++;
-            }
-        }
+    public static void finishGame(GameData gameData, int winner) {
+        gameData.setWinner(winner);
     }
-
 }

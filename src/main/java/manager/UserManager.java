@@ -1,14 +1,15 @@
 package manager;
 
-import bean.LayoutPattern;
 import bean.User;
 import dao.UserDAO;
+import dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @Service
@@ -18,7 +19,15 @@ public class UserManager {
 
     private PasswordEncoder passwordEncoder;
 
-    public User create(String login, String password) {
+    public User find(int id) {
+        return userDAO.find(id);
+    }
+
+    public List<User> findAll() {
+        return userDAO.findAll();
+    }
+
+    private User create(String login, String password) {
         User user = new User();
 
         user.setLogin(login);
@@ -32,12 +41,21 @@ public class UserManager {
         return user;
     }
 
+    public User userDTOtoUserBean(UserDTO userDTO) {
+        return create(userDTO.getLogin(), userDTO.getPassword());
+    }
+
     public void save(User user) {
         userDAO.save(user);
     }
 
     public void update(User user) {
         userDAO.update(user);
+    }
+
+    public void deleteById(int userId) {
+        User user = userDAO.find(userId);
+        userDAO.delete(user);
     }
 
     public User findByLogin(String login) {

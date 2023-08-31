@@ -10,6 +10,7 @@ public class GameData {
     private Bot beanBot;
     private int winner;
     private GameStatuses gameStatuses;
+    private int botId;
 
     public GameStatuses getGameStatuses() {
         return gameStatuses;
@@ -49,5 +50,13 @@ public class GameData {
 
     public void setBeanBot(Bot beanBot) {
         this.beanBot = beanBot;
+    }
+
+    public int getBotId() {
+        return botId;
+    }
+
+    public void setBotId(int botId) {
+        this.botId = botId;
     }
 }

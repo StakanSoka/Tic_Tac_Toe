@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class UserSymbolMapDAO extends AbstractDAO<UserSymbolMap, Integer> {
 
-    public List<UserSymbolMap> findByUserId(int userId) {
+    public List<UserSymbolMap> findAllByUserId(int userId) {
         HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
         SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -28,6 +28,26 @@ public class UserSymbolMapDAO extends AbstractDAO<UserSymbolMap, Integer> {
         session.close();
 
         return userSymbolMaps;
+    }
+
+    public UserSymbolMap find(int userId, int symbolId) {
+        HibernateFactoryConfig hibernateFactory = HibernateFactoryConfig.getInstance();
+        SessionFactory sessionFactory = hibernateFactory.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        UserSymbolMap userSymbolMap;
+        String query = "select * from user_symbol_map where user_id = :userId and symbol_id = :symbolId";
+
+        session.beginTransaction();
+
+        userSymbolMap = session.createNativeQuery(query, getEntityClass())
+                .setParameter("userId", userId)
+                .setParameter("symbolId", symbolId)
+                .getSingleResult();
+
+        session.getTransaction().commit();
+        session.close();
+
+        return userSymbolMap;
     }
 
     @Override

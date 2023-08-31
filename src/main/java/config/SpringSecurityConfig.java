@@ -4,6 +4,7 @@ import manager.UserDetailManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,13 +21,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/create").permitAll()
+                .antMatchers("/user/registration").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/game/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/login")
+                .usernameParameter("login")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/")
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/").permitAll();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/static/**");
     }
 
     // @formatter:off

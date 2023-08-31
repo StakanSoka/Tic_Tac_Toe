@@ -22,6 +22,17 @@ public class BotManager {
         return botDAO.findAll();
     }
 
+    public List<Bot> findAllWithSymbolsAndLayoutPatterns() {
+        List<Bot> bots = botDAO.findAll();
+
+        for (Bot bot : bots) {
+            bot.setSymbols(botDAO.findBotSymbols(bot.getId()));
+            bot.setLayoutPatterns(botDAO.findBotLayoutPatterns(bot.getId()));
+        }
+
+        return bots;
+    }
+
     public Bot findWithSymbolsAndLayoutPatterns(int id) {
         Bot bot = botDAO.find(id);
 

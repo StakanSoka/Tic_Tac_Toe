@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Service
@@ -20,6 +21,43 @@ public class UserSymbolMapManager {
 
     public void save(UserSymbolMap userSymbolMap) {
         userSymbolMapDAO.save(userSymbolMap);
+    }
+
+    public void update(UserSymbolMap userSymbolMap) {
+        userSymbolMapDAO.update(userSymbolMap);
+    }
+
+    public UserSymbolMap findActiveSymbolForPlayer1(int userId) {
+        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findAllByUserId(userId);
+
+        for (UserSymbolMap userSymbolMap : userSymbolMaps) {
+            if (userSymbolMap.isActiveForPlayer1()) return userSymbolMap;
+        }
+
+        return null;
+    }
+
+    public UserSymbolMap findActiveSymbolForPlayer2(int userId) {
+        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findAllByUserId(userId);
+
+        for (UserSymbolMap userSymbolMap : userSymbolMaps) {
+            if (userSymbolMap.isActiveForPlayer2()) return userSymbolMap;
+        }
+
+        return null;
+    }
+
+    public UserSymbolMap find(int userId, int symbolId) {
+        return userSymbolMapDAO.find(userId, symbolId);
+    }
+
+    public List<Symbol> findUserSymbols(User user) {
+        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findAllByUserId(user.getId());
+        List<Symbol> userSymbols = userSymbolMaps.stream()
+                .map(UserSymbolMap::getSymbol)
+                .collect(Collectors.toList());
+
+        return userSymbols;
     }
 
     public List<UserSymbolMap> create(User user, List<Symbol> symbols) {
@@ -36,14 +74,11 @@ public class UserSymbolMapManager {
             userSymbolMaps.add(userSymbolMap);
         }
 
-        userSymbolMaps.get(0).setActiveForPlayer1(true); //we need to activate first two based symbols(x and 0)
-        userSymbolMaps.get(1).setActiveForPlayer2(true);
-
         return userSymbolMaps;
     }
 
-    public List<Symbol> findActiveUserSymbolByUserId(int userId) {
-        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findByUserId(userId);
+    public List<Symbol> findActiveUserSymbolsByUserId(int userId) {
+        List<UserSymbolMap> userSymbolMaps = userSymbolMapDAO.findAllByUserId(userId);
         List<Symbol> activatedSymbols = new ArrayList<>(userSymbolMaps.size());
 
         for (UserSymbolMap userSymbolMap : userSymbolMaps) {

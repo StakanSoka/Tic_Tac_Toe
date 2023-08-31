@@ -1,8 +1,8 @@
 package dao;
 
-import bean.LayoutPattern;
 import bean.User;
 import config.HibernateFactoryConfig;
+import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,12 @@ public class UserDAO extends AbstractDAO<User, Integer> {
 
         session.beginTransaction();
 
-        user = (User)session.createNativeQuery(sql, getEntityClass())
-                .setParameter("login", login).getSingleResult();
+        try {
+            user = session.createNativeQuery(sql, getEntityClass())
+                    .setParameter("login", login).getSingleResult();
+        } catch (NoResultException e) {
+            user = null;
+        }
 
         session.getTransaction().commit();
         session.close();

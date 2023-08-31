@@ -4,7 +4,6 @@ import config.HibernateFactoryConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.io.Serializable;
 import java.util.List;
 
 public abstract class AbstractDAO<T, ID> {
