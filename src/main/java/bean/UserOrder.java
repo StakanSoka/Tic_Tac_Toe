@@ -3,6 +3,7 @@ package bean;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,12 +21,16 @@ public class UserOrder {
     @Column(name = "modified_date", nullable = false)
     private LocalDate modifiedDate;
 
-    @Column(name = "total_sum")
-    private int totalSum;
+    @OneToMany(mappedBy = "userOrder")
+    List<OrderDetail> orderDetails;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
     private OrderStatus orderStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public int getId() {
         return id;
@@ -51,14 +56,6 @@ public class UserOrder {
         this.modifiedDate = modifiedDate;
     }
 
-    public int getTotalSum() {
-        return totalSum;
-    }
-
-    public void setTotalSum(int totalSum) {
-        this.totalSum = totalSum;
-    }
-
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
@@ -67,15 +64,31 @@ public class UserOrder {
         this.orderStatus = orderStatus;
     }
 
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserOrder userOrder)) return false;
-        return id == userOrder.id && totalSum == userOrder.totalSum && createdDate.equals(userOrder.createdDate) && modifiedDate.equals(userOrder.modifiedDate);
+        return id == userOrder.id && createdDate.equals(userOrder.createdDate) && modifiedDate.equals(userOrder.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdDate, modifiedDate, totalSum);
+        return Objects.hash(id, createdDate, modifiedDate);
     }
 }

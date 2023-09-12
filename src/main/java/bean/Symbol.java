@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table
-@DiscriminatorValue("1")
+@DiscriminatorValue("1") // check Constants.OrderDetailTables
 public class Symbol extends Item {
 
     @Column

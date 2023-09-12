@@ -1,21 +1,21 @@
-package manager;
+package config;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import util.BooleanToYNConverter;
 
-public class HibernateFactoryManager {
+public class HibernateFactoryConfig {
 
-    private static volatile HibernateFactoryManager instance;
+    private static volatile HibernateFactoryConfig instance;
     private volatile SessionFactory sessionFactory;
 
-    private HibernateFactoryManager(){}
+    private HibernateFactoryConfig(){}
 
-    public static HibernateFactoryManager getInstance() {
+    public static HibernateFactoryConfig getInstance() {
         if (instance == null) {
-            synchronized (HibernateFactoryManager.class) {
+            synchronized (HibernateFactoryConfig.class) {
                 if (instance == null) {
-                    instance = new HibernateFactoryManager();
+                    instance = new HibernateFactoryConfig();
                 }
             }
         }
@@ -24,7 +24,7 @@ public class HibernateFactoryManager {
 
     public SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            synchronized (HibernateFactoryManager.class) {
+            synchronized (HibernateFactoryConfig.class) {
                 if (sessionFactory == null) {
                     Configuration configuration = new Configuration();
                     configuration.addAttributeConverter(BooleanToYNConverter.class);

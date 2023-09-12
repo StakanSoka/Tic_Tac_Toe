@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/appstyles.css">
+</head>
+<body>
+
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container login-container d-flex justify-content-center" style="margin-top: 10%">
+    <div class="col-4 card card bg-dark text-light">
+        <form th:method="post">
+            <div class="card-header text-center mt-3">
+                <h2>Login</h2>
+                <div th:if="${param.error}">
+                    <span class="error-message">Wrong Login or Password</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" class="form-control" id="login" placeholder="Enter login" name="login" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-light">Sign in</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

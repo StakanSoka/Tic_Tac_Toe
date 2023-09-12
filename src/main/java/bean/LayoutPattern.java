@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "layout_pattern")
-@DiscriminatorValue("2")
+@DiscriminatorValue("2") // check Constants.OrderDetailTables
 public class LayoutPattern extends Item {
 
     @Column(nullable = false)
@@ -19,7 +19,7 @@ public class LayoutPattern extends Item {
     @Column
     private int price;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "layoutPattern")
+    @OneToMany(mappedBy = "layoutPattern")
     private Set<UserLayoutPatternMap> userLayoutPatternMaps;
 
     @ManyToMany(mappedBy = "layoutPatterns")

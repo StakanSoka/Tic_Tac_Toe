@@ -1,0 +1,27 @@
+insert into user (login, password, role, image, nickname, registration_date, coin)
+values ('admin', 123456, 'admin', 'root', 'admin', curdate(), 0);
+
+insert into bot (name, image, difficulty, coin)
+values ('DREADFUL PLAIN -.-', 'root', 'easy', '10');
+
+insert into user_bot_map (user_id, bot_id, win)
+values (1, 1, 'N')
+
+insert into symbol(symbol, price)
+values ('X', 0);
+
+insert into symbol(symbol, price)
+values ('O', 0);
+
+insert into layout_pattern(position1, position2, price)
+values (' X       X \n   X   X   \n     X     \n   X   X   \n X       X \n',
+        '   X X X   \n  X     X  \n  X     X  \n  X     X  \n   X X X   \n', 0);
+
+insert into bot_layout_pattern_map (bot_id, layout_pattern_id)
+values (1, 1);
+
+insert into bot_symbol_map (bot_id, symbol_id)
+values (1, 1), (1, 2);
+
+insert into order_status(name)
+values ('PENDING PAYMENT');
