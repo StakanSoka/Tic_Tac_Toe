@@ -35,7 +35,7 @@ Boss 1 and 2:
 ![boss 1](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/boss%201.jpg) 
 ![boss 2](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/boss%202.jpg) 
 
-Admin hub:
+Admin:
 ![admin hub](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/admin%20hub.jpg) 
 ![users](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/users.jpg) 
 ![user changing](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/user%20changing.jpg) 
