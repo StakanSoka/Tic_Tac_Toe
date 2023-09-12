@@ -19,4 +19,4 @@ Current functional:
 - validations
 - fool checkings
 
-![hub](https://github.com//StakanSoka/Tic_Tac_Toe/tree/main/src/main/resources/static/images/hub.jpg
+![hub](https://github.com//StakanSoka/Tic_Tac_Toe/tree/main/src/main/resources/static/images/hub.jpg)
