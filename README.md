@@ -19,9 +19,25 @@ Current functional:
 - validations
 - fool checkings
 
+Hub: 
 ![hub](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/hub.jpg) 
+Registration and Login: 
 ![login](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/login.jpg) 
 ![login validation](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/login%20validation.jpg) 
 ![registration](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/registration.jpg)
 
+Shop, Cart and Inventory:
+![shop](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/shop.jpg) 
+![cart](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/cart.jpg) 
+![inventory](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/inventory.jpg) 
 
+Boss 1 and 2:
+![boss 1](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/boss%201.jpg) 
+![boss 2](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/boss%202.jpg) 
+
+Admin hub:
+![admin hub](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/admin%20hub.jpg) 
+![users](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/users.jpg) 
+![user changing](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/user%20changing.jpg) 
+![symbols](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/symbols.jpg) 
+![layout pattern redactor](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/layout%20pattern%20redactor.jpg) 
