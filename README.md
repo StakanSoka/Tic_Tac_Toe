@@ -20,6 +20,8 @@ Current functional:
 - fool checkings
 
 ![hub](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/hub.jpg) 
-![login](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/login.jpg) ![registration](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/registration.jpg)
+![login](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/login.jpg) 
+![login validation](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/login%20validation.jpg) 
+![registration](https://github.com/StakanSoka/Tic_Tac_Toe/raw/main/src/main/resources/static/images/registration.jpg)
 
 
